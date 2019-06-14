@@ -4,4 +4,5 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 EXPOSE 5000
 #CMD python ./index.py
-CMD gunicorn --threads 5 --workers 2 --bind 0.0.0.0:5000 index:index --daemon
+ENTRYPOINT ["gunicorn"]
+CMD ["--threads", "5", "--workers", "2", "--bind", "0.0.0.0:5000", "index:index"]
