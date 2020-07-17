@@ -1,8 +1,16 @@
-FROM python:alpine3.7
-COPY . /app
+# python runtime
+FROM python:3.6.5-alpine
+
+# working directory
 WORKDIR /app
-RUN pip install -r requirements.txt
-EXPOSE 5000
-#CMD python ./index.py
-ENTRYPOINT ["gunicorn"]
-CMD ["--threads", "5", "--workers", "2", "--bind", "0.0.0.0:5000", "index:index"]
+
+# copy current directory into the container
+ADD . /app
+
+# install requirements
+RUN pip3 install -r src/requirements.txt
+
+# make port 8000 available to the world outside
+EXPOSE 8000
+
+CMD ["gunicorn", "--config", "./conf/gunicorn_config.py", "src:app"]
